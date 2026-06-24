@@ -27,8 +27,13 @@ pool.query('SELECT NOW()', (err, res) => {
   }
 });
 
-// Ejemplo de ruta básica
+// Rutas de tu aplicación
 app.get('/', (req, res) => {
   res.send('¡Servidor Pulse funcionando correctamente!');
 });
+
+app.get('/inicio', (req, res) => {
+  res.send('<h1>Bienvenido a mi App Pulse</h1>');
+});
+
 
