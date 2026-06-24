@@ -25,7 +25,18 @@ pool.query('SELECT NOW()', (err, res) => {
       console.log(`Servidor escuchando en el puerto ${port}`);
     });
   }
+});// ... (tu bloque anterior del pool.query que termina en la línea 28)
 });
+
+// AHORA SÍ: Pon tus rutas aquí abajo, fuera de la llave });
+app.get('/', (req, res) => {
+  res.send('¡Servidor Pulse funcionando correctamente!');
+});
+
+app.get('/inicio', (req, res) => {
+  res.send('<h1>Bienvenido a mi App Pulse</h1>');
+});
+
 
 // Rutas de tu aplicación
 app.get('/', (req, res) => {
