@@ -55,7 +55,21 @@ app.get('/usuarios', (req, res) => {
 // 4. Servidor
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Servidor en puerto ${port}`));
-
+<!DOCTYPE html>
+<html>
+<head>
+    <title>App Pulse</title>
+</head>
+<body>
+    <h1>Registro en Pulse</h1>
+    <form action="/registrar" method="POST">
+        <input type="text" name="nombre" placeholder="Tu nombre" required>
+        <input type="email" name="email" placeholder="Tu correo" required>
+        <button type="submit">Registrarse</button>
+    </form>
+</body>
+</html>
+                     
 
            
 
