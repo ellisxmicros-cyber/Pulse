@@ -68,7 +68,36 @@ app.get('/usuarios', (req, res) => {
 // 4. Servidor
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Servidor en puerto ${port}`));
-                      
+// ... (resto de tu código anterior)
+
+// 1. Ruta para procesar el registro (el código que pegaste)
+app.post('/registrar', (req, res) => {
+  const { nombre, email } = req.body;
+  const query = 'INSERT INTO usuarios(nombre, email) VALUES($1, $2) ON CONFLICT (email) DO NOTHING';
+  
+  pool.query(query, [nombre, email], (err, result) => {
+    if (err) {
+      console.error(err); // Útil para ver errores en los logs de Render
+      res.send('<h1>Error</h1><p>Hubo un problema al conectar con la base de datos.</p><a href="/">Volver</a>');
+    } else if (result.rowCount === 0) {
+      res.send('<h1>Aviso</h1><p>Este correo ya está registrado.</p><a href="/">Intentar con otro</a>');
+    } else {
+      res.send('<h1>¡Registro exitoso!</h1><p>Bienvenido a Pulse.</p><a href="/usuarios">Ver lista</a>');
+    }
+  });
+});
+
+// 2. Ruta para servir el formulario principal
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// 3. Servidor en escucha (ESTO VA AL FINAL)
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Servidor activo en puerto ${port}`);
+});
+
 
            
 
