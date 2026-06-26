@@ -56,6 +56,19 @@ app.get('/registrar-prueba', (req, res) => {
     }
   });
 });
-        
+// Ruta para ver todos los usuarios registrados
+app.get('/usuarios', (req, res) => {
+  pool.query('SELECT * FROM usuarios', (err, result) => {
+    if (err) {
+      console.error('Error al consultar:', err);
+      res.send('Error al obtener usuarios: ' + err.message);
+    } else {
+      // Convertimos los resultados a una lista legible
+      const lista = result.rows.map(u => `<li>${u.nombre} (${u.email})</li>`).join('');
+      res.send(`<h1>Lista de Usuarios</h1><ul>${lista}</ul>`);
+    }
+  });
+});
+
            
 
