@@ -1,8 +1,12 @@
 const express = require('express');
 const { Pool } = require('pg');
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
+
+// Configuración para leer datos de formularios
+app.use(express.urlencoded({ extended: true }));
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -30,24 +34,33 @@ pool.query(`
 });
 
 // 3. Rutas
-app.get('/', (req, res) => res.send('Servidor Pulse OK'));
+// Servir el archivo index.html
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
 
-app.get('/inicio', (req, res) => res.send('<h1>Bienvenido a App Pulse</h1>'));
-
-app.get('/registrar-prueba', (req, res) => {
-  const query = 'INSERT INTO usuarios(nombre, email) VALUES($1, $2) RETURNING *';
-  pool.query(query, ['Usuario Prueba', 'prueba@ejemplo.com'], (err, result) => {
-    if (err) res.send('Error: ' + err.message);
-    else res.send('¡Usuario registrado! Datos: ' + JSON.stringify(result.rows[0]));
+// Procesar el registro del formulario
+app.post('/registrar', (req, res) => {
+  const { nombre, email } = req.body;
+  const query = 'INSERT INTO usuarios(nombre, email) VALUES($1, $2)';
+  
+  pool.query(query, [nombre, email], (err, result) => {
+    if (err) {
+      console.error('Error al insertar:', err);
+      res.send('Error: El usuario ya existe o hubo un problema.');
+    } else {
+      res.send('<h1>¡Registro exitoso!</h1><a href="/">Volver al inicio</a> | <a href="/usuarios">Ver lista</a>');
+    }
   });
 });
 
+// Ver todos los usuarios
 app.get('/usuarios', (req, res) => {
   pool.query('SELECT * FROM usuarios', (err, result) => {
     if (err) res.send('Error: ' + err.message);
     else {
       const lista = result.rows.map(u => `<li>${u.nombre} (${u.email})</li>`).join('');
-      res.send(`<h1>Lista de Usuarios</h1><ul>${lista}</ul>`);
+      res.send(`<h1>Lista de Usuarios</h1><ul>${lista}</ul><a href="/">Volver</a>`);
     }
   });
 });
@@ -55,21 +68,7 @@ app.get('/usuarios', (req, res) => {
 // 4. Servidor
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Servidor en puerto ${port}`));
-<!DOCTYPE html>
-<html>
-<head>
-    <title>App Pulse</title>
-</head>
-<body>
-    <h1>Registro en Pulse</h1>
-    <form action="/registrar" method="POST">
-        <input type="text" name="nombre" placeholder="Tu nombre" required>
-        <input type="email" name="email" placeholder="Tu correo" required>
-        <button type="submit">Registrarse</button>
-    </form>
-</body>
-</html>
-                     
+                      
 
            
 
