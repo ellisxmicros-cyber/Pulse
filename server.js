@@ -42,6 +42,20 @@ app.get('/', (req, res) => {
 app.get('/inicio', (req, res) => {
   res.send('<h1>Bienvenido a mi App Pulse</h1>');
 });
+// Ruta para registrar un usuario de prueba
+app.get('/registrar-prueba', (req, res) => {
+  const query = 'INSERT INTO usuarios(nombre, email) VALUES($1, $2) RETURNING *';
+  const values = ['Usuario Prueba', 'prueba@ejemplo.com'];
 
+  pool.query(query, values, (err, result) => {
+    if (err) {
+      console.error('Error al insertar:', err);
+      res.send('Error al registrar: ' + err.message);
+    } else {
+      res.send('¡Usuario registrado con éxito! Datos: ' + JSON.stringify(result.rows[0]));
+    }
+  });
+});
+        
            
 
