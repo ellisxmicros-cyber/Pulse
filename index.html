@@ -3,15 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>App Pulse</title>
+    <style>
+        body { font-family: 'Arial', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f4f4f9; margin: 0; }
+        .container { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 300px; text-align: center; }
+        form { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
+        input { padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
+        button { padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    </style>
 </head>
 <body>
-    <h1>Registro en Pulse</h1>
-    <form action="/registrar" method="POST">
-        <input type="text" name="nombre" placeholder="Tu nombre" required>
-        <input type="email" name="email" placeholder="Tu correo" required>
-        <button type="submit">Registrarse</button>
-    </form>
-    <br>
-    <a href="/usuarios">Ver lista de usuarios registrados</a>
+    <div class="container">
+        <h1>Registro en Pulse</h1>
+        <form action="/registrar" method="POST">
+            <input type="text" name="nombre" placeholder="Tu nombre" required>
+            <input type="email" name="email" placeholder="Tu correo" required>
+            <button type="submit">Registrarse</button>
+        </form>
+        <br>
+        <a href="/usuarios">Ver lista de usuarios</a>
+    </div>
 </body>
 </html>
+
