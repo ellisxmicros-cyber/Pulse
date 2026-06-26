@@ -46,5 +46,16 @@ app.get('/', (req, res) => {
 app.get('/inicio', (req, res) => {
   res.send('<h1>Bienvenido a mi App Pulse</h1>');
 });
-
+// Crear la tabla de usuarios si no existe
+pool.query(`
+  CREATE TABLE IF NOT EXISTS usuarios (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(100),
+    email VARCHAR(100) UNIQUE
+  );
+`, (err, res) => {
+  if (err) console.error('Error al crear la tabla', err);
+  else console.log('Tabla "usuarios" lista o creada correctamente');
+});
+           
 
